@@ -1,6 +1,25 @@
 <html>
   <head>
-    <title>Sample App</title>
+    <title>PICO-8 RUNTIME</title>
+    <style type="text/css">
+		canvas {
+		  image-rendering: optimizeSpeed;             /* Older versions of FF          */
+		  image-rendering: -moz-crisp-edges;          /* FF 6.0+                       */
+		  image-rendering: -webkit-optimize-contrast; /* Safari                        */
+		  image-rendering: -o-crisp-edges;            /* OS X & Windows Opera (12.02+) */
+		  image-rendering: pixelated;                 /* Awesome future-browsers       */
+		  -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
+		
+      width: 100%;
+      height: 100%;
+    }
+
+    #root {
+      display: inline-block;
+      width: 512px;
+      height: 512px;
+    }
+    </style>
   </head>
   <body>
     <div id='root'></div>

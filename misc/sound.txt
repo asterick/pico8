@@ -1,0 +1,45 @@
+SFX data (struct repeated 64 times)
+
+1 speed tick = 1/(60*16) seconds
+
+xx 	editor mode (0 = graphical, 1 = tracker)
+VV 	speed
+SS RR   Loop start / end
+[nnwve]	Note (0-63), waveform (0-7), volume (0-7), envelope (0-7) (repeated 32 times)
+Notes start at contra C2, incrementing in 1/12 Octaves (65.41hz*Math.pow(2,n/12))
+
+in memory: (repeated 64 times)
+32bytes of SFX notes,  xxVVSSRR
+notes are stored as little endian 16-bit values:
+xeeevvvwwwnnnnnn
+
+
+
+Music patterns are:
+xx AABBCCDD,  where A-D = SFX to play for this channel, xx = flags (1 = loop start, 2 = loop back, 4 = stop)
+
+
+In memory, they are stored as 32bit values,
+AaaaaaaaBbbbbbbbCcccccccDddddddd   (A = loop start, B = loop back, C = stop, D = unused flag)
+
+Sine:		Pure 
+SawTooth:	7:1 up:down
+Ramp:		0->1 on repeat
+50% Square:	50% duty cycle square wave
+25% Square:	20% duty cycle square wave
+tri-uneven:	100% tri 75% tri on loop
+White Noise: White noise (not periodic?)
+Triangle:	(It's triangle + LFO, LFO frequency is unknown)
+
+
+None:   	Play frequency / volume unmodified
+Slide:  	Ramp from previous frequency to the note frequency over the duration of the note (First not uses C-2 as the starting frequency)
+Vibrato: 	*** (Simply LFO modulating frequncy, exact mesurements are unknown)
+Drop:   	Ramps down to C-0 over the duration of the note
+Fade In: 	Ramps up the volume for the duration of the note
+Fade Out:	Ramps down the volume of the duration of the note
+Arpeggio Fast:	Cycles through the four notes in a group (drop 2 lowest bits off the current node index, only used frequency)
+Arpeggio Slow:  Same as above, half the speed
+
+Arpeggio fast ticks a note every 4 sound ticks
+Arpeggio slow ticks a note every 8 sound ticks

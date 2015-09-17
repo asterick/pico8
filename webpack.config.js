@@ -20,12 +20,12 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loaders: ['react-hot', 'babel'],
+        loaders: ['babel'],
         include: path.join(__dirname, 'src')
       },
       {
         test: /\.pegjs$/,
-        loaders: ['../loaders/pegjs.js'],
+        loaders: [path.join(__dirname, 'loaders/pegjs.js')],
         include: path.join(__dirname, 'src')
       }
     ]
