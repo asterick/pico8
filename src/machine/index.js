@@ -1,12 +1,10 @@
 import StdLib from "./stdlib";
 import Surface from "./surface";
 import Palette from "./palette";
+import Storage from "./storage";
 import PRNG from "./prng";
 import Mixer from "./mixer";
 import Runtime from "../runtime";
-
-
-import { loadURL } from '../util/loader';
 
 const FRAME_TICK = 1000 / 30; // 30 FPS
 
@@ -14,6 +12,7 @@ export default class Machine {
 	constructor(scale = 1) {
 		// Empty cartridge by default
 		this.cartridge = new Uint8Array(0x8000);
+		this.drive = new Storage();
 		this.prng = new PRNG();
 
 		this.createMemoryMap();
@@ -25,6 +24,10 @@ export default class Machine {
 
 	evaluate(src) {
 		this.runtime.evaluate(src);
+	}
+
+	install(url) {
+		return this.drive.install(url);
 	}
 
 	run() {
@@ -52,6 +55,7 @@ export default class Machine {
 
 			if (this.runtime.execute("_update") !== null && 
 				this.runtime.execute("_draw") !== null) {
+				this.flip();
 				this._step();
 			}
 		});

@@ -25,9 +25,11 @@ if (!window.cancelAnimationFrame){
     };
 }
 
+/*
 var mach = new Machine();
 document.getElementById("root").appendChild(mach.getCanvas());
 
 // TODO: NEED TO LOAD AND JUNK
 
 mach.evaluate('camera(-64,-64) circ(0,0,32,8) flip()')
+*/

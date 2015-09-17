@@ -14,14 +14,36 @@ export default {
 	},
 
 	// System functions
-	"load": function(filename) {
-		throw new LibraryError("Unimplemented");
+	"load": function(path) {
+		path = Runtime.toString(path);
+		this.cartridge = this.drive.load(path);
 	},
 
-	"save": function(filename) {
-		throw new LibraryError("Unimplemented");
+	"save": function(path) {
+		path = Runtime.toString(path);
+		this.drive.save(path, this.cartridge);
 	},
 	
+	"cd": function(path) {
+		path = Runtime.toString(path);
+		this.drive.cd(path);
+	},
+
+	"rm": function(path) {
+		path = Runtime.toString(path);
+		this.drive.rm(path);
+	},
+
+	"del": function(path) {
+		path = Runtime.toString(path);
+		this.drive.rm(path);
+	},
+
+	"mkdir": function(path) {
+		path = Runtime.toString(path);
+		this.drive.mkdir(path);
+	},
+
 	"folder": function() { },
 	
 	"dir": function() {
@@ -33,7 +55,7 @@ export default {
 	},
 	
 	"reboot": function() {
-		throw new LibraryError("Unimplemented");
+		throw new LibraryError("Machine has been restarted");
 	},
 	
 	"stat": function(x) {
@@ -506,7 +528,7 @@ export default {
 
 	"srand": function (x) {
 		x = Runtime.toNumber(x);
-		this.prng(seed);
+		this.prng(x);
 	},
 
 	// Binary Math
@@ -534,7 +556,7 @@ export default {
 	"bnot": function (x) {
 		x = Runtime.toNumber(x) * 0x10000;
 		
-		return (x ^ 0xFFFFFFFF) / 0x10000;
+		return ~x / 0x10000;
 	},
 
 	"shl": function  (x, y) {
