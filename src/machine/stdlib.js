@@ -44,7 +44,9 @@ export default {
 		this.drive.mkdir(path);
 	},
 
-	"folder": function() { },
+	"folder": function() {
+		/* There is no easy way to do this */
+	},
 	
 	"dir": function() {
 		throw new LibraryError("Unimplemented");
