@@ -49,7 +49,14 @@ export default {
 	},
 	
 	"dir": function() {
-		throw new LibraryError("Unimplemented");
+		var print = this.runtime.globals.get("print");
+		var color = this.runtime.globals.get("color");
+
+		var dir = this.drive.dir();
+		color(0xC);
+		dir.folders.forEach((name) => print(name));
+		color(0x7);
+		dir.files.forEach((name) => print(name));
 	},
 	
 	"run": function() {
@@ -174,7 +181,6 @@ export default {
 
 		if (scroll) {
 			var shift = this._memoryMap.drawState.cursorPos[1] - (128 - TARGET_LINES);
-			console.log(shift);
 
 			this.display.shift(shift);
 			this._memoryMap.drawState.cursorPos[1] = 128 - TARGET_LINES;
@@ -367,17 +373,29 @@ export default {
 
 	// Button functions
 	"btn": function (i, p) {
-		return false;
+		if (i === undefined) {
+			return this.joysticks.buttons(0) | (this.joysticks.buttons(1) << 6);
+		} else {
+			i = Runtime.toNumber(i);
+			p = Runtime.toNumber(p) || 0;
 
-		// Unimplemented
-		return ;
+			var buttons = this.joysticks.buttons(p);
+
+			return (buttons & (1 << i)) ? true : false;
+		}
 	},
 
 	"btnp": function (i, p) {
-		return false;
+		if (i === undefined) {
+			return this.joysticks.buttons_previous(0) | (this.joysticks.buttons_previous(1) << 6);
+		} else {
+			i = Runtime.toNumber(i);
+			p = Runtime.toNumber(p) || 0;
 
-		// Unimplemented
-		return ;
+			var buttons = this.joysticks.buttons_previous(p);
+
+			return (buttons & (1 << i)) ? true : false;
+		}
 	},
 
 	// Audio

@@ -162,7 +162,11 @@ export default class Storage {
 
 	dir () {
 		var node = this._load(this._path);
-		return Object.keys(node.children);
+
+		return Object.keys(node.children).reduce((acc, k) => {
+			acc[this._isDirectory(node.children[k]) ? "folders" : "files"].push(k);
+			return acc;
+		}, { files:[], folders: [] });
 	}
 
 	load(path) {

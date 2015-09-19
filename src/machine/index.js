@@ -4,6 +4,7 @@ import Palette from "./palette";
 import Storage from "./storage";
 import PRNG from "./prng";
 import Mixer from "./mixer";
+import Joysticks from "./joysticks";
 import Runtime from "../runtime";
 
 const FRAME_TICK = 1000 / 30; // 30 FPS
@@ -14,6 +15,7 @@ export default class Machine {
 		this.cartridge = new Uint8Array(0x8000);
 		this.drive = new Storage();
 		this.prng = new PRNG();
+		this.joysticks = new Joysticks();
 
 		this.createMemoryMap();
 		this.createCanvas(scale);
@@ -209,6 +211,8 @@ export default class Machine {
 		}
 
 		this._context.putImageData(this._imgData, 0, 0);
+
+		this.joysticks.update();
 	}
 
 	getStdLib() {
