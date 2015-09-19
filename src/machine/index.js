@@ -30,6 +30,25 @@ export default class Machine {
 		return this.drive.install(url);
 	}
 
+	load(file) {
+		this.cartridge = this.drive.load(file);
+	}
+
+	save(file) {
+		this.drive.save(file, this.cartridge);
+	}
+
+
+	tick() {
+		var update = this.runtime.globals.get("_update");
+		var draw = this.runtime.globals.get("_draw");
+		
+		update && update();
+		draw && draw();
+
+		this.flip();
+	}
+
 	run() {
 		var chars = [];
 		for (var i = 0x4300; i < this.cartridge.length; i++) {
@@ -37,27 +56,23 @@ export default class Machine {
 		}
 		this.evaluate(chars.join(""));
 
-		this.runtime.execute("_init");
+		var init = this.runtime.globals.get("_init");
+		init && init();
+
 		this._clock = +new Date();
-		_step();
+		this._step();
 	}
 
 	_step() {
 		this._raf = requestAnimationFrame(() => {
 			var now = +new Date();
 
-			if ((now - this._clock) < FRAME_TICK) {
-				this._step();
-				return ;
+			if ((now - this._clock) >= FRAME_TICK) {
+				this._clock = now;
+				this.tick();
 			}
 
-			this._clock = now;
-
-			if (this.runtime.execute("_update") !== null && 
-				this.runtime.execute("_draw") !== null) {
-				this.flip();
-				this._step();
-			}
+			this._step();
 		});
 	}
 

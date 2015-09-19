@@ -70,7 +70,7 @@ export default class Compiler {
 	}
 
 	_buildFunctionName(name) {
-		return name.names.reduce((acc, v) => ({ type: "PropertyIndex", name: v.name, expression: acc, location: () => null }));
+		return name.names.reduce((acc, v) => ({ type: "PropertyIndex", name: { type: "Identifier", name: v.name }, expression: acc, location: () => null }));
 	}
 
 	// These are special AST level compilers
@@ -191,7 +191,7 @@ export default class Compiler {
 		var b_cond = this._compileExpression(exp.if_clause.condition, locals);
 		var b_body = this._compileBody(exp.if_clause.body, locals);
 		var elses = exp.elseif_clauses.map((e) => {
-			return `else if (this._compileExpression(e.condition, locals)) {${this._compileBody(e.body, locals)}}`
+			return `else if (${this._compileExpression(e.condition, locals)}) {${this._compileBody(e.body, locals)}}`
 		});
 
 		if (exp.else_clause) {
@@ -207,6 +207,10 @@ export default class Compiler {
 
 		var params = (self ? [{ type: "Identifier", name: "self"}] : []);
 		var rest = "";
+
+		if (exp.parameters) {
+			params = params.concat(exp.parameters.parameters);
+		}
 
 		var args = this._createLocals(params, locals);
 		var body = this._compileBody(exp.body, locals);

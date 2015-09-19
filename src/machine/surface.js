@@ -1,3 +1,5 @@
+import Font from "json!../util/font.json";
+
 export default class Surface {
 	constructor(buffer, drawPalette, clipRect, cameraPos) {
 		if (buffer === undefined) {
@@ -254,6 +256,27 @@ export default class Surface {
 		for (var y = y0; y <= y1; y++) {
 			this.hline(xt, y, w0, col);
 		}
+	}
+
+	print (string, x, y, col) {
+		string.split("").map((v) => Font[v.charCodeAt(0)]).forEach((ch) => {
+			ch.forEach((bits) => {
+				var dy = y;
+
+				while (bits) {
+					if (bits & 1) {
+						this.clipset(x, dy, col);
+					}
+
+					bits >>= 1; 
+					dy++;
+				}
+				x++;
+			});
+			x++;
+		});
+
+		return x;
 	}
 
 	draw (surf, dx, dy, sx, sy, w, h) {

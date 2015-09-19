@@ -36,6 +36,7 @@
     "webpack-dev-server": "^1.8.2"
   },
   "dependencies": {
+    "json-loader": "^0.5.3",
     "loader-utils": "^0.2.11",
     "pegjs": "^0.9.0",
     "pngjs": "^0.4.0"

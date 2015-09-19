@@ -32,18 +32,9 @@ export default class Runtime {
 		func();
 	}
 
-	execute(funct) {
-		var funct = this.globals.get("funct");
-		
-		if (typeof funct !== "function") return null ; // This is an impossible value
-
-		var args = Array.prototype.slice.call(arguments, 1);
-		return funct.apply(this, args);
-	}
-
 	// Operators
 	_lt(l, r) {
-		var a = this.typeOf(l), b = this.typeOf(r);
+		var a = Runtime.typeOf(l), b = Runtime.typeOf(r);
 
 		if (a !== b) {
 			throw new RuntimeError(`Cannot compare ${a} to ${b}`);
@@ -57,7 +48,7 @@ export default class Runtime {
 	}
 
 	_gt(l, r) {
-		var a = this.typeOf(l), b = this.typeOf(r);
+		var a = Runtime.typeOf(l), b = Runtime.typeOf(r);
 
 		if (a !== b) {
 			throw new RuntimeError(`Cannot compare ${a} to ${b}`);
@@ -71,7 +62,7 @@ export default class Runtime {
 	}
 
 	_lte(l, r) {
-		var a = this.typeOf(l), b = this.typeOf(r);
+		var a = Runtime.typeOf(l), b = Runtime.typeOf(r);
 
 		if (a !== b) {
 			throw new RuntimeError(`Cannot compare ${a} to ${b}`);
@@ -85,7 +76,7 @@ export default class Runtime {
 	}
 
 	_gte(l, r) {
-		var a = this.typeOf(l), b = this.typeOf(r);
+		var a = Runtime.typeOf(l), b = Runtime.typeOf(r);
 
 		if (a !== b) {
 			throw new RuntimeError(`Cannot compare ${a} to ${b}`);
@@ -100,7 +91,7 @@ export default class Runtime {
 	}
 
 	_ne(l, r) {
-		if (this.typeOf(l) !== this.typeOf(r)) {
+		if (Runtime.typeOf(l) !== Runtime.typeOf(r)) {
 			return true;
 		}
 
@@ -108,7 +99,7 @@ export default class Runtime {
 	}
 
 	_eq(l, r) {
-		if (this.typeOf(l) !== this.typeOf(r)) {
+		if (Runtime.typeOf(l) !== Runtime.typeOf(r)) {
 			return false;
 		}
 
@@ -120,27 +111,27 @@ export default class Runtime {
 	}
 
 	_add(l, r) {
-		return Runtime.toNumber(l) + Runtime.toNumber(r);
+		return Runtime.toNumber(l, true) + Runtime.toNumber(r, true);
 	}
 
 	_sub(l, r) {
-		return Runtime.toNumber(l) - Runtime.toNumber(r);
+		return Runtime.toNumber(l, true) - Runtime.toNumber(r, true);
 	}
 
 	_mul(l, r) {
-		return Runtime.toNumber(l) * Runtime.toNumber(r);
+		return Runtime.toNumber(l, true) * Runtime.toNumber(r, true);
 	}
 
 	_div(l, r) {
-		return Runtime.toNumber(l) / Runtime.toNumber(r);
+		return Runtime.toNumber(l, true) / Runtime.toNumber(r, true);
 	}
 
 	_mod(l, r) {
-		return Runtime.toNumber(l) % Runtime.toNumber(r);
+		return Runtime.toNumber(l, true) % Runtime.toNumber(r, true);
 	}
 
 	_pow(l, r) {
-		return Math.pow(Runtime.toNumber(l), Runtime.toNumber(r));
+		return Math.pow(Runtime.toNumber(l, true), Runtime.toNumber(r, true));
 	}
 
 	_not(v) {
@@ -198,7 +189,7 @@ export default class Runtime {
 		}
 	}
 
-	static toNumber(v) {
+	static toNumber(v, enforce=false) {
 		switch (typeof v) {
 		case 'number':
 			return v;
@@ -207,8 +198,10 @@ export default class Runtime {
 				return parseInt(v, 10);
 			}
 		default:
-			throw new RuntimeError("Cannot coerce " + v + "to number");
+			if (enforce)
+				throw new RuntimeError("Cannot coerce " + v + "to number");
 		}
+		return 0;
 	}
 
 	// These are simple runtime helper functions

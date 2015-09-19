@@ -150,12 +150,14 @@ export default {
 	},
 
 	"print": function (str, x, y, col) {
+		// TODO: TERMINAL
+
 		str = Runtime.toString(str);
 		x = (Runtime.toNumber(x) | 0);
 		y = (Runtime.toNumber(y) | 0);
 		col = (col === undefined) ? this._memoryMap.drawState.drawColor[0] : Runtime.toNumber(col) | 0
 
-		throw new LibraryError("Unimplemented");
+		var size = this.display.print(str, x, y, col);
 	},
 
 	"cursor": function (x, y) {
@@ -273,14 +275,13 @@ export default {
 		flip_x = Runtime.toBool(flip_x);
 		flip_x = Runtime.toBool(flip_y);
 
-		throw new LibraryError("Unimplemented");
+		// Unimplemented
+		return ;
 	},
 
 	"sspr": function (sx, sy, sw, sh, dx, dy, dw, dh, flip_x, flip_y) {
-		dx = (Runtime.toNumber(x) | 0);
-		dy = (Runtime.toNumber(y) | 0);
-
-		throw new LibraryError("Unimplemented");
+		// Unimplemented
+		return ;
 	},
 
 	// Collections functions
@@ -345,11 +346,17 @@ export default {
 
 	// Button functions
 	"btn": function (i, p) {
-		throw new LibraryError("Unimplemented");
+		return false;
+
+		// Unimplemented
+		return ;
 	},
 
 	"btnp": function (i, p) {
-		throw new LibraryError("Unimplemented");
+		return false;
+
+		// Unimplemented
+		return ;
 	},
 
 	// Audio
@@ -384,7 +391,8 @@ export default {
 	},
 
 	"map": function (cel_x, cel_y, sx, sy, cel_w, cel_h, layer) {
-		throw new LibraryError("Unimplemented");
+		// Unimplemented
+		return ;
 	},
 
 	// Memory
