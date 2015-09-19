@@ -94,7 +94,7 @@ export default class Machine {
 				screenPalette: this.memory.subarray(0x5f10, 0x5f20),
 				clipCoords: this.memory.subarray(0x5f20, 0x5f24),
 				drawColor: this.memory.subarray(0x5f25, 0x5f26),
-				cursorPos: this.memory.subarray(0x5f25, 0x5f28),
+				cursorPos: this.memory.subarray(0x5f26, 0x5f28),
 				cameraPos: new Int16Array(this.memory.buffer, 0x5f28, 2),
 				screenMode: this.memory.subarray(0x5f2c, 0x5f2d),
 			},

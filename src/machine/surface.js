@@ -275,8 +275,23 @@ export default class Surface {
 			});
 			x++;
 		});
+	}
 
-		return x;
+	shift(lines) {
+		lines = Math.min(128, lines);
+
+		var length = 64 * (128 - lines);
+
+		var target = 0;
+		var source = lines * 64;
+
+		for (var i = 0; i < length; i++) {
+			this.frame[target++] = this.frame[source++];
+		}
+
+		for (; target < 0x2000; target++) {
+			this.frame[target] = 0;
+		}
 	}
 
 	draw (surf, dx, dy, sx, sy, w, h) {

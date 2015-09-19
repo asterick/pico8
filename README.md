@@ -5,7 +5,8 @@ This is my quick and dirty reimplementation of the Pico-8 fantasy console
 
 Known issues
 ------------
-* Cannot handle game loops that don't rely on _update / _draw loops (recompiler non-reenterant)
-* Numerous functions have not been implemented
-* Virtual filesystem has not been implemented, and there is no way to inject programs into platform
+* sspr spr and map do not draw anything
+* btn btnp do not indicate key state
+* a few system calls are stubbed
+* sfx and music do nothing
 * Audio mixer doesn't have effects, is poorly tuned and is generally broken

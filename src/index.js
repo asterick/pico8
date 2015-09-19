@@ -1,5 +1,6 @@
 import Machine from "./machine";
 
+// This is my polyfill section
 var lastTime = 0;
 var vendors = ['ms', 'moz', 'webkit', 'o'];
 for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
@@ -29,6 +30,9 @@ var mach = new Machine();
 
 mach.drive.install("static/carts/picoracer.p8.png").then(function () {
     document.getElementById("root").appendChild(mach.getCanvas());
+    /*
     mach.load("picoracer.p8.png");
     mach.run();
+    */
+    mach.evaluate('for i = 0, 22 do print(i) end flip()');
 });

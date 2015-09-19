@@ -150,14 +150,35 @@ export default {
 	},
 
 	"print": function (str, x, y, col) {
-		// TODO: TERMINAL
+		const TARGET_LINES = 6;
 
 		str = Runtime.toString(str);
-		x = (Runtime.toNumber(x) | 0);
-		y = (Runtime.toNumber(y) | 0);
 		col = (col === undefined) ? this._memoryMap.drawState.drawColor[0] : Runtime.toNumber(col) | 0
 
-		var size = this.display.print(str, x, y, col);
+		var scroll = false;
+		if (x == undefined || y == undefined) {
+			x = this._memoryMap.drawState.cursorPos[0];
+			y = this._memoryMap.drawState.cursorPos[1];
+
+			var ny = (this._memoryMap.drawState.cursorPos[1] += 6);
+
+			if (ny >= 128 - TARGET_LINES) {
+				scroll = true;
+			}
+		} else {
+			x = (Runtime.toNumber(x) | 0);
+			y = (Runtime.toNumber(y) | 0);
+		}
+
+		this.display.print(str, x, y, col);
+
+		if (scroll) {
+			var shift = this._memoryMap.drawState.cursorPos[1] - (128 - TARGET_LINES);
+			console.log(shift);
+
+			this.display.shift(shift);
+			this._memoryMap.drawState.cursorPos[1] = 128 - TARGET_LINES;
+		}
 	},
 
 	"cursor": function (x, y) {
