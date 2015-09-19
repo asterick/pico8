@@ -395,6 +395,14 @@ export default class Compiler {
 	}
 
 	_compileLocalDeclaration(exp, locals) {
+		// Compile results for expressions
+		if (exp.expressions) {
+			var expressions = exp.expressions.map((e) => {
+				return this._compileExpression(e, locals)
+			});
+		}
+	
+		// define variables if we need them
 		var blocking = this._createLocals(exp.variables, locals);
 
 		if (blocking.length) {
@@ -404,7 +412,19 @@ export default class Compiler {
 		}
 
 		if (exp.expressions) {
-			return blocking + this._compileAssignment(exp, locals);			
+			var init;
+
+			if (expressions.length > 1) {
+				init = `[${expressions.join(",")}]`;
+			} else {
+				init = `${expressions[0]}`;
+			}
+
+			var assigns = exp.variables.map((v, i) => {
+				return this._set(locals, v, `this._pluck(_v, ${i})`);
+			});
+
+			return `${blocking}; _v = ${init}; ${assigns.join(";")}`;
 		} else {
 			return blocking;
 		}

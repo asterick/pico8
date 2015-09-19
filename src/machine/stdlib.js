@@ -572,12 +572,12 @@ export default {
 
 	"rnd": function (x) {
 		x = Runtime.toNumber(x);
-		return this.prng(x);
+		return this.prng.get(x);
 	},
 
 	"srand": function (x) {
 		x = Runtime.toNumber(x);
-		this.prng(x);
+		this.prng.seed(x);
 	},
 
 	// Binary Math

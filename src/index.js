@@ -26,10 +26,12 @@ if (!window.cancelAnimationFrame){
     };
 }
 
+
 var mach = new Machine();
 
 mach.drive.install("static/carts/picoracer.p8.png").then(function () {
     document.getElementById("root").appendChild(mach.getCanvas());
+    mach.evaluate('printh(rnd(#"modes"-1))');
     mach.load("picoracer.p8.png");
     mach.run();
 });

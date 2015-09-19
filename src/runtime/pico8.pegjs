@@ -270,7 +270,7 @@ multiply_expression
 	/ unary_expression
 
 unary_expression
-	= _ t:($("not" wordbreak) / "#" / "-") a:expression
+	= _ t:("#" / "-" / $("not" wordbreak)) a:unary_expression
 		{ return { location: location, type: unaryOperatorTypes[t], expression:a }; }
 	/ power_expression
 
