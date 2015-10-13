@@ -1,4 +1,7 @@
 import Machine from "./machine";
+import shine from "moonshine/vm/moonshine.js";
+
+console.log(shine);
 
 // This is my polyfill section
 var lastTime = 0;

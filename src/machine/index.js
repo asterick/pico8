@@ -5,7 +5,7 @@ import Storage from "./storage";
 import PRNG from "./prng";
 import Mixer from "./mixer";
 import Joysticks from "./joysticks";
-import Runtime from "../runtime";
+import shine from "moonshine/vm/moonshine.js";
 
 const FRAME_TICK = 1000 / 30; // 30 FPS
 
